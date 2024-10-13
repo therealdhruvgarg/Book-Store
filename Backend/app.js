@@ -1,51 +1,37 @@
-const express = require("express");
+// const http = require("http")
+// const app = http.createServer();
+
+const express = require("express")
+const app = express();
 const cors = require("cors");
+app.use(express.json());
 require("dotenv").config();
 require('./conn/conn');
-
-const app = express();
-
-// Middleware
-app.use(express.json());
-app.use(cors({
-    origin: 'https://book-store-h9go.vercel.app', // Replace with your frontend's URL
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true
-}));
-
-app.options('*', cors());
-
-// Import routes
 const User = require("./routes/user");
 const Books = require("./routes/book");
 const Favourite = require("./routes/favourite");
 const Cart = require("./routes/cart");
 const Order = require("./routes/order");
-const CreateOrder = require("./routes/RazorPay");
-const paymentRoutes = require("./routes/paymentRoutes");
+const CreateOrder = require("./routes/RazorPay")
+const paymentRoutes = require("./routes/paymentRoutes")
 
-// API routes
-app.use("/api/v1/users", User);
-app.use("/api/v1/books", Books);
-app.use("/api/v1/favourites", Favourite);
-app.use("/api/v1/cart", Cart);
-app.use("/api/v1/orders", Order);
-app.use("/api/v1/create-order", CreateOrder);
-app.use("/api/v1/payments", paymentRoutes);
+const port = process.env.PORT || 3000;  
 
-// Root route
+app.use(cors());
+// routes
+app.use("/api/v1", User);
+app.use("/api/v1", Books);
+app.use("/api/v1", Favourite);
+app.use("/api/v1", Cart);
+app.use("/api/v1", Order);
+app.use("/api/v1", CreateOrder);
+app.use("/api/v1", paymentRoutes);
+
 app.get("/", (req, res) => {
-    res.send("Hello from Backend");
-});
+        res.send("Hello from Backend")
+    })
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!' });
-});
-
-// Server setup
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server started at port: ${port}`);
-});
+// creating Port
+app.listen(port, ()=> {
+    console.log(`Server Started at port: ${port}`)
+})
