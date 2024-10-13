@@ -13,6 +13,8 @@ app.use(cors({
     credentials: true
 }));
 
+app.options('*', cors());
+
 // Import routes
 const User = require("./routes/user");
 const Books = require("./routes/book");
