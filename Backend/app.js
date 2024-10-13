@@ -17,13 +17,7 @@ const paymentRoutes = require("./routes/paymentRoutes")
 
 const port = process.env.PORT || 3000;  
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");  // Allow all origins or specify the exact origin
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
-    next();
-  });
-  
+app.use(cors());
 // routes
 app.use("/api/v1", User);
 app.use("/api/v1", Books);
