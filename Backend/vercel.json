@@ -1,15 +1,5 @@
 {
-    "headers": [
-    {
-        "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    }
-  ],
+    
     "installCommand": "npm install --legacy-peer-deps",
     "version": 2,
     "builds":[
