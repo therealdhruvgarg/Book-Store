@@ -17,7 +17,11 @@ const paymentRoutes = require("./routes/paymentRoutes")
 
 const port = process.env.PORT || 3000;  
 
-app.use(cors());
+app.use(express.json());
+app.use(cors({
+    origin: "*",
+    credentials: true
+}));
 // routes
 app.use("/api/v1", User);
 app.use("/api/v1", Books);
