@@ -31,7 +31,7 @@ const Cart = () => {
       }
     };
     fetchCart();
-  }, []);
+  }, [Cart]);
 
   const deleteItem = async (bookid) => {
     try {
