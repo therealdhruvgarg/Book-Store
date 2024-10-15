@@ -45,23 +45,27 @@ const AllOrders = () => {
         { headers }
       );
   
-      // Check if update was successful
+      // Log the entire response to inspect it
+      console.log(response);
+  
+      // Check if update was successful (adjust based on actual response structure)
       if (response.data.success) {
         alert(response.data.message);
   
-        // Update the status in the current state to reflect the changes
+        // Update the state immediately to reflect the changes
         const updatedOrders = [...AllOrders];
         updatedOrders[i].status = Values.status;
         setAllOrders(updatedOrders);
-        setOptions(-1); // Reset options
+        setOptions(-1); // Reset the options state
       } else {
-        alert("Failed to update the status.");
+        alert(response.data.message || "Failed to update the status.");
       }
     } catch (error) {
       console.error(error);
       alert("An error occurred while updating the status.");
     }
   };
+  
   
 
   // Remove the last order if necessary
@@ -125,48 +129,53 @@ const AllOrders = () => {
                 <h1 className="">₹ {items.book.price}</h1>
               </div>
               <div className="w-[30%] md:w-[16%]">
-                <h1 className="font-semibold">
-                  <button
-                    className="hover:scale-105 transition-all duration-300"
-                    onClick={() => setOptions(i)}
-                  >
-                    {items.status === "Order Placed" ? (
-                      <span className="text-green-400">{items.status}</span>
-                    ) : items.status === "Canceled" ? (
-                      <span className="text-red-500">{items.status}</span>
-                    ) : (
-                      <span className="text-yellow-500">{items.status}</span>
-                    )}
-                  </button>
-                  <div
-                    className={`${
-                      Options === i ? "block" : "hidden"
-                    } flex mt-4`}
-                  >
-                    <select
-                      name="status"
-                      className="bg-gray-700 text-gray-300 border border-gray-600 rounded p-1"
-                      onChange={change}
-                      value={Values.status}
-                    >
-                      {["Order Placed", "Out for Delivery", "Delivered", "Canceled"].map((status) => (
-                        <option value={status} key={status}>
-                          {status}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      className="text-green-400 hover:text-green-600 mx-2"
-                      onClick={() => {
-                        setOptions(-1);
-                        submitChanges(i);
-                      }}
-                    >
-                      <FaCheck />
-                    </button>
-                  </div>
-                </h1>
-              </div>
+  <h1 className="font-semibold">
+    <button
+      className="hover:scale-105 transition-all duration-300"
+      onClick={() => setOptions(i)}
+    >
+      {items.status === "Order Placed" ? (
+        <span className="text-green-400">{items.status || "Order Placed"}</span>
+      ) : items.status === "Canceled" ? (
+        <span className="text-red-500">{items.status}</span>
+      ) : items.status === "Out for Delivery" ? (
+        <span className="text-yellow-500">{items.status}</span>
+      ) : items.status === "Delivered" ? (
+        <span className="text-blue-400">{items.status}</span>
+      ) : (
+        <span className="text-gray-400">Unknown Status</span>
+      )}
+    </button>
+    <div
+      className={`${Options === i ? "block" : "hidden"} flex mt-4`}
+    >
+      <select
+        name="status"
+        className="bg-gray-700 text-gray-300 border border-gray-600 rounded p-1"
+        onChange={change}
+        value={Values.status}
+      >
+        {["Order Placed", "Out for Delivery", "Delivered", "Canceled"].map(
+          (status) => (
+            <option value={status} key={status}>
+              {status}
+            </option>
+          )
+        )}
+      </select>
+      <button
+        className="text-green-400 hover:text-green-600 mx-2"
+        onClick={() => {
+          setOptions(-1);
+          submitChanges(i);
+        }}
+      >
+        <FaCheck />
+      </button>
+    </div>
+  </h1>
+</div>
+
               <div className="w-[10%] md:w-[5%]">
                 <button
                   className="text-xl text-gray-300 hover:text-orange-400"
