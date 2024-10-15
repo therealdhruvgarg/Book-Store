@@ -1,13 +1,13 @@
-import React from 'react'
-import Hero from '../components/Home/Hero';
-import RecentlyAdded from '../components/Home/RecentlyAdded';
+import Hero from '../components/Home/Hero'
+import RecentlyAdded from '../components/Home/RecentlyAdded'
 
-const Home = () => {
+export default function Home() {
   return (
-    <div className='bg-zinc-900 text-white px-10 py-8'>
-        <Hero/>
-        <RecentlyAdded/>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+        <Hero />
+        <RecentlyAdded />
+      </div>
     </div>
   )
 }
-export default Home;

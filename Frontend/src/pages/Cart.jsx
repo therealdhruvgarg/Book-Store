@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
@@ -14,18 +14,6 @@ const Cart = () => {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
   };
-
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     const response = await axios.get(
-  //       "${import.meta.env.VITE_BACKEND_URL}/api/v1/get-user-cart",
-  //       { headers }
-  //     );
-  //     setCart(response.data.data);
-  //     // console.log(response);
-  //   };
-  //   fetch();
-  // }, []);
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -46,23 +34,24 @@ const Cart = () => {
   }, []);
 
   const deleteItem = async (bookid) => {
-    const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/remove-from-cart/${bookid}`,
-      {},
-      { headers }
-    );
-    alert(response.data.message);
-    // console.log(response);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/remove-from-cart/${bookid}`,
+        {},
+        { headers }
+      );
+      alert(response.data.message);
+      setCart((prevCart) => prevCart.filter(item => item._id !== bookid)); // Remove item from cart locally
+    } catch (error) {
+      console.error("Error removing item:", error);
+      alert("Failed to remove item from cart. Please try again.");
+    }
   };
 
   useEffect(() => {
     if (Cart && Cart.length > 0) {
-      let total = 0;
-      Cart.map((items) => {
-        total += items.price;
-      });
+      const total = Cart.reduce((acc, item) => acc + item.price, 0);
       setTotal(total);
-      total = 0;
     }
   }, [Cart]);
 
@@ -71,7 +60,6 @@ const Cart = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/create-order`,
         { amount: Total * 100 }
-        // { headers: { "Content-Type": "application/json" } }
       );
       const data = res.data;
 
@@ -79,10 +67,9 @@ const Cart = () => {
         key: import.meta.env.REACT_APP_RAZORPAY_API_KEY,
         order_id: data.id,
         currency: "INR",
-        name: "BookSpot", //your business name
-        description: "Test Transaction",
-        image:
-          "https://i.pinimg.com/564x/11/53/18/115318a03dd409f995b46ac90d7cd75d.jpg",
+        name: "BookSpot", // your business name
+        description: "Book Purchase",
+        image: "https://i.pinimg.com/564x/11/53/18/115318a03dd409f995b46ac90d7cd75d.jpg",
         handler: async function (response) {
           try {
             const verifyRes = await axios.post(
@@ -92,17 +79,15 @@ const Cart = () => {
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
               }
-              // { headers: { "Content-Type": "application/json" } }
             );
 
             if (verifyRes.data.isOk) {
-              const response = await axios.post(
+              await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/api/v1/place-order`,
                 { order: Cart },
                 { headers }
               );
               alert("Payment Successful");
-              // alert(response.data.message);
               navigate("/profile/orderHistory"); // Redirect on success
             } else {
               alert("Payment Verification Failed");
@@ -122,106 +107,87 @@ const Cart = () => {
     }
   };
 
-  // const PlaceOrder = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BACKEND_URL}/api/v1/place-order`,
-  //       { order: Cart },
-  //       { headers }
-  //     );
-  //     alert(response.data.message);
-  //     navigate("/profile/orderHistory");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   return (
-    <div className="bg-zinc-900 px-12 h-screen py-8">
-      {!Cart && (
-        <div className="w-full h-[100%] flex items-center justify-center">
+    <div className="bg-gray-900 px-12 h-screen py-8">
+      {loading && (
+        <div className="w-full h-full flex items-center justify-center">
           <Loader />
         </div>
       )}
-      {Cart && Cart.length === 0 && (
-        <div className="h-screen">
-          <div className="h-[100%] flex items-center justify-center flex-col">
-            <h1 className="text-5xl lg:text-6xl font-semibold text-zinc-400">
-              Empty Cart
-            </h1>
-            <img
-              src="/empty-cart.png"
-              alt="empty cart"
-              className="lg:h-[50vh]"
-            />
-          </div>
+      {!loading && Cart.length === 0 && (
+        <div className="h-full flex items-center justify-center flex-col">
+          <h1 className="text-5xl lg:text-6xl font-semibold text-gray-400">
+            Empty Cart
+          </h1>
+          <img
+            src="/empty-cart.png"
+            alt="empty cart"
+            className="lg:h-[50vh] mt-4"
+          />
         </div>
       )}
-      {Cart && Cart.length > 0 && (
+      {!loading && Cart.length > 0 && (
         <>
-          <h1 className="text-5xl font-semibold text-zinc-500 mb-8">
+          <h1 className="text-5xl font-semibold text-gray-300 mb-8">
             Your Cart
           </h1>
-          {Cart.map((items, i) => (
+          {Cart.map((item, i) => (
             <div
-              className="w-full my-4 rounded flex flex-col md:flex-row p-4 bg-zinc-800 justify-between items-center"
+              className="w-full my-4 rounded flex flex-col md:flex-row p-4 bg-gray-800 justify-between items-center shadow-md transition-transform transform hover:scale-105"
               key={i}
             >
               <img
-                src={items.url}
-                alt="/"
-                className="h-[20vh] md:h-[10vh] object-cover"
+                src={item.url}
+                alt={item.title}
+                className="h-[20vh] md:h-[10vh] object-cover rounded"
               />
               <div className="w-full md:w-auto">
-                <h1 className="text-2xl text-zinc-100 font-semibold text-start mt-2 md:mt-0">
-                  {items.title}
+                <h1 className="text-2xl text-gray-100 font-semibold text-start mt-2 md:mt-0">
+                  {item.title}
                 </h1>
-                <p className="text-normal text-zinc-300 mt-2 hidden lg:block">
-                  {items.desc.slice(0, 100)}...
+                <p className="text-normal text-gray-300 mt-2 hidden lg:block">
+                  {item.desc.slice(0, 100)}...
                 </p>
-                <p className="text-normal text-zinc-300 mt-2 hidden md:block lg:hidden">
-                  {items.desc.slice(0, 65)}...
+                <p className="text-normal text-gray-300 mt-2 hidden md:block lg:hidden">
+                  {item.desc.slice(0, 65)}...
                 </p>
-                <p className="text-normal text-zinc-300 mt-2 block md:hidden">
-                  {items.desc.slice(0, 100)}...
+                <p className="text-normal text-gray-300 mt-2 block md:hidden">
+                  {item.desc.slice(0, 100)}...
                 </p>
               </div>
               <div className="flex mt-4 w-full md:w-auto items-center justify-between">
-                <h2 className="text-zinc-100 text-3xl font-semibold flex">
-                  ₹ {items.price}
+                <h2 className="text-gray-100 text-3xl font-semibold flex">
+                  ₹ {item.price}
                 </h2>
                 <button
-                  className="bg-red-100 text-red-700 border boreder-red-700 rounded p-2 ms-12"
-                  onClick={() => deleteItem(items._id)}
+                  className="bg-red-500 text-white rounded p-2 transition-all duration-300 hover:bg-red-700 flex items-center"
+                  onClick={() => deleteItem(item._id)}
                 >
                   <AiFillDelete />
                 </button>
               </div>
             </div>
           ))}
-        </>
-      )}
-      {Cart && Cart.length > 0 && (
-        <div className="mt-4 w-full flex items-center justify-end">
-          <div className="p-4 bg-zinc-800 rounded">
-            <h1 className="text-3xl text-zinc-200 font-semibold">
-              Total Amount
-            </h1>
-            <div className="mt-3 flex items-center justify-between text-xl text-zinc-200">
-              <h2>{Cart.length} books</h2>
-              <h2>₹ {Total}</h2>
-            </div>
-            <div className="w-[100%] mt-3">
-              <button
-                className="bg-zinc-100 rounded px-4 py-2 flex justify-center w-full font-bold hover:bg-blue-500 hover:text-zinc-100 transition-all duration-300"
-                // onClick={PlaceOrder}
-                onClick={createOrder}
-              >
-                Place your order
-              </button>
+          <div className="mt-4 w-full flex items-center justify-end">
+            <div className="p-4 bg-gray-800 rounded shadow-lg">
+              <h1 className="text-3xl text-gray-200 font-semibold">
+                Total Amount
+              </h1>
+              <div className="mt-3 flex items-center justify-between text-xl text-gray-200">
+                <h2>{Cart.length} books</h2>
+                <h2>₹ {Total}</h2>
+              </div>
+              <div className="w-full mt-3">
+                <button
+                  className="bg-blue-600 text-white rounded px-4 py-2 flex justify-center w-full font-bold hover:bg-blue-700 transition-all duration-300"
+                  onClick={createOrder}
+                >
+                  Place your order
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

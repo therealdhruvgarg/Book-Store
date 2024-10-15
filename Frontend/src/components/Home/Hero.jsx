@@ -1,31 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import { ArrowRight } from "lucide-react"
 
-const Hero = () => {
+export default function Hero() {
   return (
-    <div className="h-[75vh] flex flex-col-reverse md:flex-row items-center justify-center">
-      <div className="w-full mb-12 md:mb-0 lg:w-3/6 flex flex-col items-center lg:items-start justify-center">
-        <h1 className="text-4xl lg:text-6xl font-semibold text-yellow-100 text-center lg:text-left">
-          Discover Your Next great Read
+    <div className="min-h-[75vh] flex flex-col-reverse lg:flex-row items-center justify-between gap-12 py-16">
+      <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start justify-center space-y-8">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground text-center lg:text-left leading-tight">
+          Discover Your Next Great Read
         </h1>
-        <p className="mt-4 text-xl text-zinc-300 text-center lg:text-left">
+        <p className="text-lg md:text-xl text-muted-foreground text-center lg:text-left max-w-2xl">
           Uncover captivating stories, enriching knowledge, and endless
-          inspiration in out curated collections of books
+          inspiration in our curated collections of books.
         </p>
-        <div className="mt-8">
-          <Link
-            to="/all-books"
-            className="text-yellow-100 text-xl lg:text-2xl font-semibold border border-yellow-100 px-10 py-3 hover:bg-zinc-800 rounded-full"
-          >
-            Discover Books
-          </Link>
-        </div>
+        <Link
+          to="/all-books"
+          className="inline-flex items-center px-6 py-3 text-lg font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-full transition-colors duration-300 ease-in-out group"
+        >
+          Discover Books
+          <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300 ease-in-out" />
+        </Link>
       </div>
-      <div className="w-full lg:w-3/6 h-auto lg:h-[100%] flex items-center justify-center mb-8 md:mb-0">
-        <img className="rounded-3xl" src="./hero.png" alt="hero" />
+      <div className="w-full lg:w-1/2 flex items-center justify-center">
+        <img
+          className="rounded-3xl shadow-2xl max-w-full h-auto object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+          src="./hero.png"
+          alt="Bookstore hero image"
+          width={600}
+          height={400}
+        />
       </div>
     </div>
-  );
-};
-
-export default Hero;
+  )
+}

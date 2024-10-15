@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import BookCard from "../BookCard/BookCard";
 
@@ -18,7 +18,7 @@ const Favourites = () => {
     };
     fetch();
   }, [FavouriteBooks]);
-
+``
   return (
     <>
       {FavouriteBooks && FavouriteBooks.length === 0 && (

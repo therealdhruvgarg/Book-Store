@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
 
 const Settings = () => {
@@ -29,43 +29,48 @@ const Settings = () => {
   }, []);
 
   const submitAddress = async () => {
-    const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/update-address`,
-      Value,
-      { headers }
-    );
-    alert(response.data.message);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/update-address`,
+        Value,
+        { headers }
+      );
+      alert(response.data.message);
+    } catch (error) {
+      alert(error.response.data.message);
+    }
   };
+
   return (
-    <div>
+    <div className="bg-gray-900 p-4 min-h-screen flex flex-col">
       {!ProfileData && (
-        <div className="w-full h[100%] flex items-center justify-center">
+        <div className="flex items-center justify-center h-full">
           <Loader />
         </div>
       )}
       {ProfileData && (
-        <div className="h-[10%] p-0 md:p-4 text-zinc-100">
-          <h1 className="text-3xl md:text-5xl font-semibold text-zinc-500 mb-8">
+        <div className="text-gray-200">
+          <h1 className="text-3xl md:text-5xl font-semibold text-gray-400 mb-8">
             Settings
           </h1>
-          <div className="flex gap-12">
-            <div className="">
-              <label htmlFor="">Username</label>
-              <p className="p-2 rounded bg-zinc-800 mt-2 font-semibold">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex flex-col">
+              <label className="font-medium">Username</label>
+              <p className="p-2 rounded bg-gray-800 mt-2 font-semibold">
                 {ProfileData.username}
               </p>
             </div>
-            <div className="">
-              <label htmlFor="">Email</label>
-              <p className="p-2 rounded bg-zinc-800 mt-2 font-semibold">
+            <div className="flex flex-col">
+              <label className="font-medium">Email</label>
+              <p className="p-2 rounded bg-gray-800 mt-2 font-semibold">
                 {ProfileData.email}
               </p>
             </div>
           </div>
           <div className="mt-4 flex flex-col">
-            <label htmlFor="">Address</label>
+            <label className="font-medium">Address</label>
             <textarea
-              className="p-2 rounded bg-zinc-800 mt-2 font-semibold"
+              className="p-2 rounded bg-gray-800 mt-2 font-semibold resize-none"
               rows={5}
               placeholder="Address"
               name="address"
@@ -75,7 +80,7 @@ const Settings = () => {
           </div>
           <div className="mt-4 flex justify-end">
             <button
-              className="bg-yellow-500 text-zinc-900 font-semibold px-3 py-2 rounded hover:bg-yellow-400 transition-all duration-300"
+              className="bg-yellow-500 text-gray-900 font-semibold px-4 py-2 rounded hover:bg-yellow-400 transition-all duration-300"
               onClick={submitAddress}
             >
               Update

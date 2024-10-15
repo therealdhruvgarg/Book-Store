@@ -1,11 +1,11 @@
-import React from 'react'
-
 const Footer = () => {
   return (
-    <div className=" bg-zinc-800 px-8 py-4 text-white">
-        <h1 className='text-xl font-semibold text-center'>&copy; 2024, Made with love by DHRUV</h1>
+    <div className="bg-gray-900 px-6 py-4 text-white">
+      <h1 className="text-lg font-medium text-center mb-2">
+        &copy; 2024, Made with love by DHRUV
+      </h1>
     </div>
-  )
-}
+  );
+};
 
 export default Footer;

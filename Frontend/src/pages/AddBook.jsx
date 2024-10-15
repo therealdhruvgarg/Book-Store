@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 const AddBook = () => {
@@ -49,24 +49,24 @@ const AddBook = () => {
         alert(response.data.message);
       }
     } catch (error) {
-        alert(error.response.data.message);
+      alert(error.response.data.message);
     }
   };
 
   return (
-    <div className="h-[100%] p-0 md:p-4">
-      <h1 className="text-3xl md:text-5xl font-semibold text-zinc-500 mb-8">
+    <div className="min-h-screen p-4 bg-gray-900">
+      <h1 className="text-3xl md:text-5xl font-semibold text-gray-300 mb-8">
         Add Book
       </h1>
-      <div className="p-4 bg-zinc-800 ronded">
+      <div className="p-6 bg-gray-800 rounded-lg shadow-lg">
         <div>
-          <label htmlFor="" className="text-zinc-400">
-            Image
+          <label htmlFor="url" className="text-gray-400">
+            Image URL
           </label>
           <input
             type="text"
-            className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none"
-            placeholder="url of image"
+            className="w-full mt-2 bg-gray-700 text-gray-100 p-3 outline-none rounded transition-all duration-300 focus:ring focus:ring-blue-500"
+            placeholder="URL of image"
             name="url"
             required
             value={Data.url}
@@ -74,13 +74,13 @@ const AddBook = () => {
           />
         </div>
         <div className="mt-4">
-          <label htmlFor="" className="text-zinc-400">
-            Title of book
+          <label htmlFor="title" className="text-gray-400">
+            Title of Book
           </label>
           <input
             type="text"
-            className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none"
-            placeholder="title of book"
+            className="w-full mt-2 bg-gray-700 text-gray-100 p-3 outline-none rounded transition-all duration-300 focus:ring focus:ring-blue-500"
+            placeholder="Title of book"
             name="title"
             required
             value={Data.title}
@@ -88,13 +88,13 @@ const AddBook = () => {
           />
         </div>
         <div className="mt-4">
-          <label htmlFor="" className="text-zinc-400">
-            Author of book
+          <label htmlFor="author" className="text-gray-400">
+            Author of Book
           </label>
           <input
             type="text"
-            className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none"
-            placeholder="author of book"
+            className="w-full mt-2 bg-gray-700 text-gray-100 p-3 outline-none rounded transition-all duration-300 focus:ring focus:ring-blue-500"
+            placeholder="Author of book"
             name="author"
             required
             value={Data.author}
@@ -102,28 +102,28 @@ const AddBook = () => {
           />
         </div>
         <div className="mt-4 flex gap-4">
-          <div className="w-3/6">
-            <label htmlFor="" className="text-zinc-400">
+          <div className="w-1/2">
+            <label htmlFor="language" className="text-gray-400">
               Language
             </label>
             <input
               type="text"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none"
-              placeholder="language of book"
+              className="w-full mt-2 bg-gray-700 text-gray-100 p-3 outline-none rounded transition-all duration-300 focus:ring focus:ring-blue-500"
+              placeholder="Language of book"
               name="language"
               required
               value={Data.language}
               onChange={change}
             />
           </div>
-          <div className="w-3/6">
-            <label htmlFor="" className="text-zinc-400">
+          <div className="w-1/2">
+            <label htmlFor="price" className="text-gray-400">
               Price
             </label>
             <input
               type="number"
-              className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none"
-              placeholder="price of book"
+              className="w-full mt-2 bg-gray-700 text-gray-100 p-3 outline-none rounded transition-all duration-300 focus:ring focus:ring-blue-500"
+              placeholder="Price of book"
               name="price"
               required
               value={Data.price}
@@ -132,13 +132,13 @@ const AddBook = () => {
           </div>
         </div>
         <div className="mt-4">
-          <label htmlFor="" className="text-zinc-400">
-            Description of book
+          <label htmlFor="desc" className="text-gray-400">
+            Description of Book
           </label>
           <textarea
-            className="w-full mt-2 bg-zinc-900 text-zinc-100 p-2 outline-none"
+            className="w-full mt-2 bg-gray-700 text-gray-100 p-3 outline-none rounded transition-all duration-300 focus:ring focus:ring-blue-500"
             rows={5}
-            placeholder="description of book"
+            placeholder="Description of book"
             name="desc"
             required
             value={Data.desc}
@@ -146,7 +146,7 @@ const AddBook = () => {
           />
         </div>
         <button
-          className="mt-4 px-3 bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition-all duration-300"
+          className="mt-6 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-300"
           onClick={submit}
         >
           Add Book
