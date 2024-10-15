@@ -48,7 +48,7 @@ export const Navbar = () => {
       <nav className="z-50 flex bg-gray-900 text-white px-6 py-4 items-center justify-between shadow-md">
         <Link to="/" className="flex items-center">
           <img className="h-10 me-3" src="/books.png" alt="logo" />
-          <h1 className="text-2xl font-bold tracking-tight">BookSpot</h1>
+          <h1 className="text-2xl font-bold tracking-tight">BookStop</h1>
         </Link>
         <div className="hidden md:flex items-center gap-6">
           {links.map((item, i) => (
