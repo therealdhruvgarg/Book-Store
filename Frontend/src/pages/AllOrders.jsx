@@ -36,14 +36,32 @@ const AllOrders = () => {
   };
 
   const submitChanges = async (i) => {
-    const id = AllOrders[i]._id;
-    const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/api/v1/update-status/${id}`,
-      Values,
-      { headers }
-    );
-    alert(response.data.message);
+    try {
+      const id = AllOrders[i]._id;
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/update-status/${id}`,
+        Values,
+        { headers }
+      );
+  
+      // Check if update was successful
+      if (response.data.success) {
+        alert(response.data.message);
+  
+        // Update the status in the current state to reflect the changes
+        const updatedOrders = [...AllOrders];
+        updatedOrders[i].status = Values.status;
+        setAllOrders(updatedOrders);
+        setOptions(-1); // Reset options
+      } else {
+        alert("Failed to update the status.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while updating the status.");
+    }
   };
+  
 
   // Remove the last order if necessary
   if (AllOrders) {
