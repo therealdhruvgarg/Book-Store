@@ -32,8 +32,9 @@ const AllOrders = () => {
 
   const change = (e) => {
     const { value } = e.target;
-    setValues({ status: value });
+    setValues({ ...Values, status: value });
   };
+  
 
   const submitChanges = async (i) => {
     try {
