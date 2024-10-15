@@ -64,9 +64,9 @@ const AllOrders = () => {
   
 
   // Remove the last order if necessary
-  if (AllOrders) {
-    AllOrders.splice(AllOrders.length - 1, 1);
-  }
+  // if (AllOrders) {
+  //   AllOrders.splice(AllOrders.length - 1, 1);
+  // }
 
   return (
     <>
