@@ -32,8 +32,9 @@ const AllOrders = () => {
 
   const change = (e) => {
     const { value } = e.target;
-    setValues({ ...Values, status: value });
+    setValues({ ...Values, status: value.trim() });  // Ensuring trimmed values
   };
+  
   
 
   const submitChanges = async (i) => {
@@ -134,21 +135,23 @@ const AllOrders = () => {
       className="hover:scale-105 transition-all duration-300"
       onClick={() => setOptions(i)}
     >
-      {items.status === "Order Placed" ? (
-        <span className="text-green-400">{items.status || "Order Placed"}</span>
-      ) : items.status === "Canceled" ? (
-        <span className="text-red-500">{items.status}</span>
-      ) : items.status === "Out for Delivery" ? (
-        <span className="text-yellow-500">{items.status}</span>
-      ) : items.status === "Delivered" ? (
-        <span className="text-blue-400">{items.status}</span>
-      ) : (
-        <span className="text-gray-400">Unknown Status</span>
-      )}
+      {(() => {
+        const currentStatus = items.status ? items.status.trim() : "";
+        switch (currentStatus) {
+          case "Order Placed":
+            return <span className="text-green-400">{currentStatus}</span>;
+          case "Out for Delivery":
+            return <span className="text-yellow-500">{currentStatus}</span>;
+          case "Delivered":
+            return <span className="text-blue-400">{currentStatus}</span>;
+          case "Canceled":
+            return <span className="text-red-500">{currentStatus}</span>;
+          default:
+            return <span className="text-gray-400">Unknown Status</span>;
+        }
+      })()}
     </button>
-    <div
-      className={`${Options === i ? "block" : "hidden"} flex mt-4`}
-    >
+    <div className={`${Options === i ? "block" : "hidden"} flex mt-4`}>
       <select
         name="status"
         className="bg-gray-700 text-gray-300 border border-gray-600 rounded p-1"
